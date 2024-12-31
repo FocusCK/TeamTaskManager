@@ -5,7 +5,8 @@ class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
 
     class Meta:
-        model = Userfields = ['username', 'email', 'password']
+        model = User
+        fields = ['username', 'email', 'password']
     
     def clean_password(self):
         password = self.cleaned_data.get('password')
