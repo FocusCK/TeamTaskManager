@@ -3,6 +3,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from .forms import UserRegistrationForm, UserLoginForm
+from django.contrib.auth.decorators import login_required
 
 # Resistration
 def register(request):
@@ -41,3 +42,7 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     return redirect('login') #Redirect to login page
+
+@login_required
+def home(request):
+    return render(request, 'users/home.html')
