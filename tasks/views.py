@@ -20,7 +20,7 @@ def create_task(request):
             return redirect('task_list')
     else:
         form = TaskForm()
-    return render(request, 'tasks/ceate_task.html', {'form': form})
+    return render(request, 'tasks/task_create.html', {'form': form})
 
 def update_task(request, task_id):
     task = get_object_or_404(Task, id=task_id, user=request.user)
@@ -31,7 +31,7 @@ def update_task(request, task_id):
             return redirect('task_list')
     else:
         form = TaskForm(instance=task)
-    return render(request, 'tasks/update_task.html', {'form': form})
+    return render(request, 'tasks/task_update.html', {'form': form})
 
 def delete_task(request, task_id):
     task = get_object_or_404(Task, id=task_id, user=request.user)
