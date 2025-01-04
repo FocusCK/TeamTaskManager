@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # My apps
     "users",
+    "tasks",
 ]
 
 MIDDLEWARE = [
@@ -131,4 +132,4 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 
-LOGIN_REDIRECT_URL = '/users/home/'
+LOGIN_REDIRECT_URL = '/tasks/'  # Redirect to task list instead of home page
