@@ -2,8 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from .forms import UserRegistrationForm, UserLoginForm
+from .forms import UserRegistrationForm, UserLoginForm, TeamForm, TeamMembershipForm
 from django.contrib.auth.decorators import login_required
+from .models import Team, TeamMembership, Company
+from django.http import HttpResponseForbidden
 
 # Resistration
 def register(request):
@@ -47,32 +49,51 @@ def logout_user(request):
 def home(request):
     return render(request, 'users/home.html')
 
+@login_required
+def create_team(request, company_id):
+    company = Company.objects.get(id=company_id)
 
-# Must add the following to the tasks app(seperation of causes)
-# def create_task(request):
-#     if request.method == 'POST':
-#         form = TaskForm(request.POST)
-#         if form.is_valid():
-#             task = form.save(commit=False)
-#             task.user = request.user
-#             task.save()
-#             return redirect('home')
-#     else:
-#         form = TaskForm()
-#     return render(request, 'users/ceate_task.html', {'form': form})
+    if request.user.groups.filter(name='Manager').exists():
+        if request.method == 'POST':
+            form = TeamForm(request.POST)
+            if form.is_valid():
+                team = form.save(commit=False)
+                team.company = company
+                team.manager = request.user
+                team.save()
 
-# def update_task(request, task_id):
-#     task = get_object_or_404(Task, id=task_id, user=request.user)
-#     if request.method == 'POST':
-#         form = TaskForm(request.POST, instance=task)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('home')
-#     else:
-#         form = TaskForm(instance=task)
-#     return render(request, 'users/update_task.html', {'form': form})
+                # To automatcally assign manager to the team
+                TeamMembership.objects.create(user=request.user, team=team, role= 'Manager')
 
-# def delete_task(request, task_id):
-#     task = get_object_or_404(Task, id=task_id, user=request.user)
-#     task.delete()
-#     return redirect('home')
+                return redirect('team_list', company_id=company.id)
+            else:
+                return render(request, 'users/create_team.html', {'form': form, 'company': company})
+        else:
+            form = TeamForm()
+        return render(request, 'users/create_team.html', {'form': form, 'company': company})
+            
+    else:
+        return HttpResponseForbidden("You don't have permission to create a team")
+
+@login_required
+def assign_role(request, team_id):
+    team = Team.objects.get(id=team_id)
+    if request.user == team.manager:
+        if request.method == 'POST':
+            form = TeamMembershipForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('team_list', company_id=team.company.id)
+        else:
+            form = TeamMembershipForm(initial={'team': team})
+        return render(request, 'users/assign_role.html', {'form': form, 'team': team})
+    else:
+        return redirect('home')
+    
+def team_list(request, company_id):
+    # Get company based on company_id
+    company = Company.objects.get(id=company_id)
+    # Get all temas that belong to the company
+    teams = Team.objects.filter(company=company)
+    # Render team list with company and its teams
+    return render(request, 'users/team_list.html', {'company': company, 'teams':teams})

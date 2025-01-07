@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from tasks.models import Task
+from .models import Team, TeamMembership
 
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
@@ -18,3 +18,13 @@ class UserRegistrationForm(forms.ModelForm):
 class UserLoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
+
+class TeamForm(forms.ModelForm):
+    class Meta:
+        model = Team
+        fields = ['name', 'manager', 'company']
+
+class TeamMembershipForm(forms.ModelForm):
+    class Meta:
+        model = TeamMembership
+        fields = ['user', 'role', 'team']

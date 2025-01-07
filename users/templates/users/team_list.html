@@ -1,0 +1,10 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+    <h2>Teams for {{ company.name  }}</h2>
+    <ul>
+        {% for team in teams %}
+        <li>{{ team.name  }} - Manager: {{ team.manager.username }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
