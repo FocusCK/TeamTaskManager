@@ -12,10 +12,16 @@
             <a class="navbar-brand" href="/">Task Manager</a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ml-auto">
-                    <!-- <li class="nav-item"><a class="nav-link" href="{#% url 'home' %#}">Home</a></li> -->
-                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+                    <!-- Check if the user is logged in -->
+                    {% if user.is_authenticated %}
+                        <!-- Display if user is logged in -->
+                        <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                    {% else %}
+                        <!-- Display if the user is not logged in -->
+                        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
