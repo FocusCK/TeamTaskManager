@@ -17,6 +17,7 @@
                         <!-- Display if user is logged in -->
                         <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a></li>
                     {% else %}
                         <!-- Display if the user is not logged in -->
                         <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>

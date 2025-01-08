@@ -5,6 +5,7 @@ from django.contrib import messages
 from .forms import UserRegistrationForm, UserLoginForm, TeamForm, TeamMembershipForm
 from django.contrib.auth.decorators import login_required
 from .models import Team, TeamMembership, Company
+from tasks.models import Task
 from django.http import HttpResponseForbidden
 
 # Resistration
@@ -97,3 +98,24 @@ def team_list(request, company_id):
     teams = Team.objects.filter(company=company)
     # Render team list with company and its teams
     return render(request, 'users/team_list.html', {'company': company, 'teams':teams})
+
+@login_required
+def dashboard(request):
+    # Display the users tasks
+    tasks = Task.objects.filter(assigned_to=request.user)
+
+    # For managers' additional tasks
+    if request.user.groups.filter(name='Manager').exists():
+        teams = Team.objects.filter(manager=request.user)
+        team_tasks = Task.objects.filter(team__in=teams)
+
+        return render(request, 'users/dashboard_manager.html', {
+            'tasks': tasks,
+            'team_tasks': team_tasks,
+            'teams': teams,
+        })
+    
+    # For team members' tasks
+    return render(request, 'users/dashboard_member.html', {
+        'tasks': tasks
+    })

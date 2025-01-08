@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h2>Welcome, {{ user.username }}!</h2>  
+<h3>Your Tasks</h3>
+<ul>
+    {% for task in tasks %}
+    <li>{{ task.title }} - Due: {{ task.due_date }}</li>
+    {% empty %}
+    <p>You have no assigned tasks.</p>
+    {% endfor %}
+</ul>
+{% endblock %}
