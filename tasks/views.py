@@ -1,6 +1,4 @@
 from django.shortcuts import render, redirect, get_object_or_404
-
-from users.models import Team
 from .forms import TaskForm
 from .models import Task
 from django.contrib.auth.decorators import login_required
@@ -9,11 +7,7 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 @login_required
 def task_list(request):
-    if request.user.groups.filter(name='Manager').exists():
-        teams = Team.objects.filter(manager=request.user)
-        tasks = Task.objects.filter(team__in=teams)
-    else:
-        tasks = Task.objects.filter(user=request.user)
+    tasks = Task.objects.filter(user=request.user)
     return render(request, 'tasks/task_list.html', {'tasks': tasks})
 
 def create_task(request):
@@ -28,6 +22,7 @@ def create_task(request):
         form = TaskForm()
     return render(request, 'tasks/task_create.html', {'form': form})
 
+
 def update_task(request, task_id):
     task = get_object_or_404(Task, id=task_id, user=request.user)
     if request.method == 'POST':
@@ -38,6 +33,7 @@ def update_task(request, task_id):
     else:
         form = TaskForm(instance=task)
     return render(request, 'tasks/task_update.html', {'form': form})
+
 
 def delete_task(request, task_id):
     task = get_object_or_404(Task, id=task_id, user=request.user)
