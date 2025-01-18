@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
 from django.contrib import messages
 from .forms import UserRegistrationForm, UserLoginForm
 from django.contrib.auth.decorators import login_required
 from tasks.models import Task
+from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
+
 
 # User Registration
 def register(request):
@@ -49,3 +51,18 @@ def home(request):
 def dashboard(request):
     tasks = Task.objects.filter(user=request.user)
     return render(request, 'users/dashboard.html', {'tasks': tasks})
+
+@login_required
+def profile_settings(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user) #Keep uer logged in after password change
+            messages.success(request, 'Your password has been updated successfully!')
+            return redirect('profile_settings')
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = PasswordChangeForm(user=request.user)
+    return render(request, 'users/profile_settings.html', {'form': form})
