@@ -26,12 +26,17 @@ def login_user(request):
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
+            print(f"Attempting to authenticate user: {username}")
             user = authenticate(request, username=username, password=password)
-            if user:
+            if user is not None:
+                print("Authentication successful!")
                 login(request, user)
                 return redirect('task_list')  # Redirect to task list after successful login
             else:
+                print("Authentication failed.")
                 messages.error(request, "Invalid login credentials")
+        else:
+            messages.error(request, "Form is not valid")
     else:
         form = UserLoginForm()
     return render(request, 'users/login.html', {'form': form})
