@@ -4,19 +4,35 @@
 
 {% block content %}
 <h2>Your Tasks</h2>
-<ul class="list-group">
+<div class="task-container">
     {% for task in tasks %}
-       <div class="task">
-        <h3>{{ task.title }}</h3>
-        <p>{{ task.description }}</p>
-        <p>Due: {{ task.due_date }}</p>
-        <p>Status: {% if task.completed %} Completed {% else %} Incomplete {% endif %}</p>
-        <a href="{% url 'update_task' task.id %}">Edit</a>
-        <a href="{% url 'delete_task' task.id %}">Delete</a>
-       </div>
+        <div class="card-stack">
+            <div class="card task" id="task-card-{{ task.id }}" onclick="toggleCard({{ task.id }})">
+                <div class="card-header">
+                    <h5 class="task-title mb-0">{{ task.title }}</h5>
+                </div>
+                <div class="card-body collapse" id="task-details-{{ task.id }}">
+                    <p><strong>Due:</strong> {{ task.due_date }}</p>
+                    <p><strong>Status:</strong> {% if task.completed %} Completed {% else %} Incomplete {% endif %}</p>
+                    <p>{{ task.description|slice:":200" }}...</p>  <!-- Show the first 200 characters of the description -->
+                    <a href="{% url 'update_task' task.id %}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{% url 'delete_task' task.id %}" class="btn btn-danger btn-sm">Delete</a>
+                </div>
+            </div>
+        </div>
     {% endfor %}
-</ul>
+</div>
 <div class="mt-3">
-<a href="{% url 'create_task' %}">Create a new task</a>
+    <a href="{% url 'create_task' %}" class="btn btn-primary">Create a new task</a>
 </div>
 {% endblock %}
+<script>
+    function toggleCard(taskId) {
+        const cardDetails = document.getElementById(`task-details-${taskId}`);
+        if (cardDetails.classList.contains('collapse')) {
+            cardDetails.classList.remove('collapse');
+        } else {
+            cardDetails.classList.add('collapse');
+        }
+    }
+</script>

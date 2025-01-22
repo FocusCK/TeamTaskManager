@@ -1,0 +1,56 @@
+/* Task card stack */
+.task-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 20px;
+}
+
+.card-stack {
+    position: relative;
+    width: 200px;
+    height: auto;
+    cursor: pointer;
+}
+
+.card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: transform 0.3s ease-in-out, z-index 0s linear 0.3s;  /* Smooth transition */
+    z-index: 1;  /* Cards on top should have higher z-index */
+}
+
+.card:hover {
+    transform: translateY(-20px); /* Raise the card when hovered */
+   /* z-index: 2;   Bring the card to the front */
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.card-body {
+    display: none;
+    padding: 10px;
+    background-color: #fff;
+    border-top: 1px solid #ddd;
+}
+
+.card-body.collapse {
+    display: block;  /* Make the details visible when expanded */
+}
+
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #f8f9fa; /* Make sure footer has a background */
+    padding: 10px;
+    text-align: center;
+}
