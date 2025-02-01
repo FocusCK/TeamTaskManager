@@ -8,6 +8,11 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def task_list(request):
     tasks = Task.objects.filter(user=request.user)
+    sort_by = request.GET.get('sort_by', 'due_date')
+    if sort_by == 'due_date':
+        tasks = tasks.order_by('due_date')
+    elif sort_by == 'created_at':
+        tasks = tasks.order_by('created_at')
     return render(request, 'tasks/task_list.html', {'tasks': tasks})
 
 def create_task(request):
