@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import TaskForm
 from .models import Task
 from django.contrib.auth.decorators import login_required
+import requests
 
 
 # Create your views here.
@@ -44,3 +45,19 @@ def delete_task(request, task_id):
     task = get_object_or_404(Task, id=task_id, user=request.user)
     task.delete()
     return redirect('task_list')
+
+def get_daily_quote():
+    url = "https://api.adviceslip.com/advice"
+    response = requests.get(url)
+    
+    if response.status_code == 200:
+        data = response.json()
+        return data['slip']['advice']
+    else:
+        return "Failed to fetch quote."
+
+@login_required
+def dashboard(request):
+    tasks = Task.objects.filter(user=request.user)
+    quote = get_daily_quote()  # Fetch the quote
+    return render(request, 'tasks/dashboard.html', {'tasks': tasks, 'quote': quote})
