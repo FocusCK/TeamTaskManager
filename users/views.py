@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib import messages
-from .forms import UserRegistrationForm, UserLoginForm
+from .forms import UserRegistrationForm
 from django.contrib.auth.decorators import login_required
 from tasks.models import Task
-from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 
 
 # User Registration
@@ -22,23 +22,21 @@ def register(request):
 # User Login
 def login_user(request):
     if request.method == 'POST':
-        form = UserLoginForm(request.POST)
+        form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-            print(f"Attempting to authenticate user: {username}")
             user = authenticate(request, username=username, password=password)
             if user is not None:
-                print("Authentication successful!")
                 login(request, user)
                 return redirect('task_list')  # Redirect to task list after successful login
             else:
-                print("Authentication failed.")
                 messages.error(request, "Invalid login credentials")
         else:
             messages.error(request, "Form is not valid")
     else:
-        form = UserLoginForm()
+        form = AuthenticationForm()
+        
     return render(request, 'users/login.html', {'form': form})
 
 # User Logout

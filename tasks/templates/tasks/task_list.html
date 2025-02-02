@@ -10,12 +10,14 @@
     <form method="GET">
         <label for="sort_by">Sort by:</label>
         <select name="sort_by" id="sort_by" class="form-select">
-            <option value="due_date" {% if request.GET.sort_by == 'due_date' %}selected{% endif %}>Due Date</option>
-            <option value="created_at" {% if request.GET.sort_by == 'created_at' %}selected{% endif %}>Date Created</option>
+            <!-- Ensure correct condition in the 'selected' attribute -->
+            <option value="due_date" {% if request.GET.sort_by == 'due_date' %}selected="selected"{% endif %}>Due Date</option> 
+            <option value="created_at" {% if request.GET.sort_by == 'created_at' %}selected="selected"{% endif %}>Date Created</option>
         </select>
         <button type="submit" class="btn btn-primary">Sort</button>
     </form>
 </div>
+
 
 <div class="task-container">
     {% for task in tasks %}
@@ -46,6 +48,16 @@
             cardDetails.classList.remove('collapse');
         } else {
             cardDetails.classList.add('collapse');
+        }
+    }
+
+    function confirmDelete(taskId) {
+        const confirmDeletion = confirm("Are you sure you want to delete this task?");
+        if (confirmDeletion) {
+            return true;
+        } else {
+            // Prevent default (navigate to the deleted URL)
+            return false;
         }
     }
 </script>
