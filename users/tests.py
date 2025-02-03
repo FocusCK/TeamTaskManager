@@ -1,30 +1,41 @@
-# from django.test import TestCase
-# from django.contrib.auth.models import User
-# from django.urls import reverse
+from django.test import TestCase
+from django.urls import reverse
+from django.contrib.auth.models import User
+
+class UserRegistrationTest(TestCase):
+
+    def test_user_registration(self):
+        # Send POST request to registration URL with form data
+        response = self.client.post(reverse('register'), {
+            'username': 'newuser',
+            'password1': 'testpassword123',
+            'password2': 'testpassword123',
+            'email': 'newuser@example.com',
+        })
+
+        # Check if user is redirected after successful registration (redirects to task list)
+        self.assertRedirects(response, reverse('task_list'))
+
+        # Verify that user was actually created in database
+        user = User.objects.get(username='newuser')
+        self.assertEqual(user.email, 'newuser@example.com')
 
 
-# # Create your tests here.
-# class TeamManagemenetTest(TestCase):
+class UserLoginTest(TestCase):
 
-#     def setUp(self):
-#         # Create dummy company
-#         self.company = Company.objects.create(name="Test Company")
-#         # Create dummy manager
-#         self.manager = User.objects.create_user(username='manager', password='password')
-#         # Assign manager the team manager
-#         self.team_url = reverse('create_team', args=[self.company.id])
-    
-#     def test_manager_can_create_team(self):
-#         """Test if a manager  can create a team in the company"""
-#         self.client.login(username='manager', password='password')
-#         # Request to make a team using POST
-#         response = self.client.post(self.team_url, {'name': 'Product Development Team'})
-#         # Chaeck team creation successful
-#         self.assertEqual(response.status_code, 302) # Redirect if successful creation
-#         self.assertRedirects(response, reverse('team_list', args=[self.company.id]))  # Check if redirected to team list
+    def setUp(self):
+        # Set up user to test login
+        self.user = User.objects.create_user(username='testuser', password='testpassword123')
 
-#         self.assertEqual(Team.objects.count(), 1) # Check team's been created
-#         self.assertEqual(Team.objects.first().name, 'Product Development Team') # Check the name
+    def test_user_login(self):
+        # Send POST request to login wiht user credentials
+        response = self.client.post(reverse('login'), {
+            'username': 'testuser',
+            'password': 'testpassword123',
+        })
 
-#         self.assertEqual(Team.objects.first().manager, self.manager) #Check if manager is assigned
+        # Check if login is successful (redirect to task list after login)
+        self.assertRedirects(response, reverse('task_list'))
 
+        # Verify that user is logged in by checking sesion
+        self.assertTrue('_auth_user_id' in self.client.session)
