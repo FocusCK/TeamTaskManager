@@ -11,8 +11,21 @@
     <p>{{ quote }}</p>
 </div>
 
+<div class="sorting-options">
+    <form method="GET">
+        <label for="sort_by">Sort by:</label>
+        <select name="sort_by" id="sort_by" class="form-select">
+            <option value="due_date" {% if request.GET.sort_by == 'due_date' %}selected{% endif %}>Due Date</option>
+            <option value="created_at" {% if request.GET.sort_by == 'created_at' %}selected{% endif %}>Date Created</option>
+        </select>
+        <br>
+        <button type="submit" class="btn btn-primary">Sort</button>
+    </form>
+</div>
+
+
 <!-- Tasks in Card Layout -->
-<div class="task-container">
+<div class="task-container d-flex flex-wrap">
     {% for task in tasks %}
         <div class="card-stack">
             <div class="card task shadow-lg mb-3" id="task-card-{{ task.id }}" onclick="toggleCard({{ task.id }})">
