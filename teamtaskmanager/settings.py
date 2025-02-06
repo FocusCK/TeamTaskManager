@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from pathlib import Path
+import dj_database_url
+# from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -87,6 +89,12 @@ DATABASES = {
         "PORT": "5432",
     }
 }
+
+DATABASES = {
+    "default": dj_database_url.parse("postgresql://projdb_fvqu_user:8bZ7yBMgp0Be9Yyqd6yqQZvxS4ksI9qH@dpg-cuht7vin91rc739tcsv0-a.frankfurt-postgres.render.com/projdb_fvqu")
+}
+
+
 
 
 # Password validation
