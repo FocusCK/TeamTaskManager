@@ -1,7 +1,31 @@
+
 {% extends 'users/base.html' %}
 
 {% block title %}Home - Task Management{% endblock %}
+
 {% block content %}
-<h2>Welcome, {{ user.username }}!</h2>
-<p>This is your homepage where you can manage tasks and more.</p>
+    <div class="container text-center">
+        <h2>Welcome, {{ user.username }}!</h2>
+        <p>We’re excited to have you on board! Let’s help you get started with managing your tasks efficiently.</p>
+
+        <!-- Some engaging content -->
+        <div class="mt-4">
+            <p>On this page, you'll find the latest updates, progress on your tasks, and tips to make the most out of your task manager.</p>
+            <p>Ready to organize your tasks?</p>
+
+            <div class="d-flex justify-content-center">
+                <a href="{% url 'dashboard' %}" class="btn btn-primary btn-lg mx-2">Go to Dashboard</a>
+                <a href="{% url 'create_task' %}" class="btn btn-success btn-lg mx-2">Add a New Task</a>
+            </div>
+        </div>
+
+        <div class="mt-5">
+            <h4>Why Use Our Task Manager?</h4>
+            <ul class="list-unstyled">
+                <li>✅ Stay on top of your tasks</li>
+                <li>✅ Organize tasks by due date or priority</li>
+                <li>✅ Keep track of your progress</li>
+            </ul>
+        </div>
+    </div>
 {% endblock %}

@@ -45,9 +45,11 @@ def logout_user(request):
     return redirect('login')  # Redirect to login page after logging out
 
 # Home Page
-@login_required
 def home(request):
-    return render(request, 'users/home.html')
+    if request.user.is_authenticated:
+        return render(request, 'users/home.html')
+    else:
+        return render(request, 'users/home_guest.html')
 
 # User Dashboard (Shows tasks for the logged-in user)
 @login_required
