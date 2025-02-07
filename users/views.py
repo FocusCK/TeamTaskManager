@@ -53,7 +53,7 @@ def home(request):
 @login_required
 def dashboard(request):
     tasks = Task.objects.filter(user=request.user)
-    return render(request, 'users/dashboard.html', {'tasks': tasks})
+    return render(request, 'tasks/dashboard.html', {'tasks': tasks})
 
 @login_required
 def profile_settings(request):
