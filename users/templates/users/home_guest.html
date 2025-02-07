@@ -1,0 +1,38 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Welcome to Task Manager - Sign Up to Get Started{% endblock %}
+
+{% block content %}
+    <div class="container text-center">
+        <h2>Welcome to Our Task Manager!</h2>
+        <p>Stay organized and boost your productivity with our task management tool.</p>
+
+        <!-- Call to action to register -->
+        <div class="mt-4">
+            <p>Sign up today to get started on managing your tasks efficiently.</p>
+            <a href="{% url 'register' %}" class="btn btn-primary btn-lg mx-2">Sign Up</a>
+            <p>Already have an account? <a href="{% url 'login' %}">Log in here</a></p>
+        </div>
+
+        <!-- Key Features Section -->
+        <div class="mt-5">
+            <h4>Why Use Our Task Manager?</h4>
+            <ul class="list-unstyled">
+                <li>✅ Organize tasks by due date, priority, and more.</li>
+                <li>✅ Keep track of your personal and work-related tasks.</li>
+                <li>✅ Stay on top of deadlines and get reminders.</li>
+            </ul>
+        </div>
+
+        <!-- How it Works Section -->
+        <div class="mt-5">
+            <h4>How It Works</h4>
+            <p>Creating tasks is easy and intuitive. Once you're signed up:</p>
+            <ul class="list-unstyled">
+                <li>Create tasks with due dates and priorities.</li>
+                <li>Track your progress and complete tasks on time.</li>
+                <li>Stay organized with filters, categories, and reminders.</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
