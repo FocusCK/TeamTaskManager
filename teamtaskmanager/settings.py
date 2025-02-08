@@ -80,19 +80,10 @@ WSGI_APPLICATION = "teamtaskmanager.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "teamtaskmanager",
-        "USER": "postgres",
-        "PASSWORD": "postgres",
-        "HOST": "localhost",
-        "PORT": "5432",
-    }
-}
+
 
 DATABASES = {
-    "default": dj_database_url.parse("postgresql://projdb_fvqu_user:8bZ7yBMgp0Be9Yyqd6yqQZvxS4ksI9qH@dpg-cuht7vin91rc739tcsv0-a.frankfurt-postgres.render.com/projdb_fvqu")
+    "default": dj_database_url.parse("DATABASE_URL")
 }
 
 
