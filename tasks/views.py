@@ -62,6 +62,7 @@ def dashboard(request):
     tasks = Task.objects.filter(user=request.user)
     sort_by = request.GET.get('sort_by', 'due_date')
     completion_status = request.GET.get('completion_status')
+    quote = get_daily_quote()
     if sort_by not in ['due_date', 'created_at']:
         sort_by = 'due_date'
     tasks = tasks.order_by(sort_by)
@@ -70,4 +71,4 @@ def dashboard(request):
     elif completion_status == 'incomplete':
         tasks = tasks.filter(completed=False)
 
-    return render(request, 'tasks/dashboard.html', {'tasks': tasks, 'sort_by': sort_by, 'completion_status': completion_status})
+    return render(request, 'tasks/dashboard.html', {'tasks': tasks, 'quote': quote, 'sort_by': sort_by, 'completion_status': completion_status})
