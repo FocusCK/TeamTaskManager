@@ -9,18 +9,22 @@ A web application to help individuals manage their tasks with features like crea
 - **Sorting Tasks**: Users can sort tasks by due date or date created.
 - **Responsive Layout**: The app is designed to be mobile-friendly with a collapsible navbar for small screens.
 
+## Link to render
+
+https://teamtaskmanager.onrender.com
+
 ## Installation
 
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/team-task-manager.git
+   git clone https://github.com/FocusCK/TeamTaskManager.git
    ```
 
 2. Navigate to the project directory:
 
    ```bash
-   cd team-task-manager
+   cd teamtaskmanager
    ```
 
 3. Install dependencies:
