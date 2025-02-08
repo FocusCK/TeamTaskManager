@@ -9,12 +9,13 @@ import requests
 @login_required
 def task_list(request):
     tasks = Task.objects.filter(user=request.user)
-    sort_by = request.GET.get('sort_by', 'due_date')
-    if sort_by == 'due_date':
-        tasks = tasks.order_by('due_date')
-    elif sort_by == 'created_at':
-        tasks = tasks.order_by('created_at')
-    return render(request, 'tasks/task_list.html', {'tasks': tasks})
+    sort_by = request.GET.get('sort_by', 'due_date')  # sort by 'due_date'
+    if sort_by not in ['due_date', 'created_at']:
+        sort_by = 'due_date'
+    tasks = tasks.order_by(sort_by)
+    quote = get_daily_quote()
+    return render(request, 'tasks/task_list.html', {'tasks': tasks, 'quote': quote, 'sort_by': sort_by})
+
 
 def create_task(request):
     if request.method == 'POST':
@@ -59,5 +60,8 @@ def get_daily_quote():
 @login_required
 def dashboard(request):
     tasks = Task.objects.filter(user=request.user)
-    quote = get_daily_quote()  # Fetch the quote
-    return render(request, 'tasks/dashboard.html', {'tasks': tasks, 'quote': quote})
+    sort_by = request.GET.get('sort_by', 'due_date')
+    if sort_by not in ['due_date', 'created_at']:
+        sort_by = 'due_date'
+    tasks = tasks.order_by(sort_by)
+    return render(request, 'tasks/dashboard.html', {'tasks': tasks, 'sort_by': sort_by})

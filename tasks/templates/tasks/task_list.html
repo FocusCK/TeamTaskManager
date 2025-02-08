@@ -5,6 +5,20 @@
 {% block content %}
 <h2 class="text-center mb-4">Your Tasks</h2>
 
+<!-- Sorting Options (May or may not include) -->
+<!-- <div class="sorting-options">
+    <form method="GET">
+        <label for="sort_by">Sort by:</label>
+        <select name="sort_by" id="sort_by" class="form-select">
+            <option value="due_date" {% if request.GET.sort_by == 'due_date' %}selected{% endif %}>Due Date</option>
+            <option value="created_at" {% if request.GET.sort_by == 'created_at' %}selected{% endif %}>Date Created</option>
+        </select>
+        <br>
+        <button type="submit" class="btn btn-primary">Sort</button>
+    </form>
+</div> -->
+
+
 <div class="task-list">
     {% for task in tasks %}
         <div class="task-item mb-3 p-3 border rounded shadow-sm">
