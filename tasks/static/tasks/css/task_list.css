@@ -1,13 +1,11 @@
-/* Task Container Layout */
 .task-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Auto-wrap with a minimum width of 250px */
-    gap: 20px; /* Space between the cards */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
     padding: 20px;
-    margin-bottom: 80px; /* Ensure space for footer */
+    margin-bottom: 80px;
 }
 
-/* Each card container */
 .card-stack {
     background-color: #fff;
     border-radius: 8px;
@@ -19,10 +17,6 @@
     height: auto;
 }
 
-.card-stack:hover {
-    transform: translateY(-5px); /* Small lift effect */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
-}
 
 .card-header {
     background-color: #f8f9fa;
@@ -35,6 +29,10 @@
     background-color: #fff;
     border-top: 1px solid #ddd;
     display: none;
+}
+
+.card-body.collapse {
+    display: block;
 }
 
 footer {
