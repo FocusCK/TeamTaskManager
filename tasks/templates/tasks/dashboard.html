@@ -3,52 +3,47 @@
 {% block title %}Dashboard - Task Management{% endblock %}
 
 {% block content %}
-<h2 class="text-center mb-4">Your Dashboard</h2>
+    <h2 class="text-center mb-4">Your Dashboard</h2>
 
-<!-- Display Quote -->
-<div class="quote-section bg-light p-4 rounded shadow-sm mb-4">
-    <h5 class="font-weight-bold">Quote of the Day:</h5>
-    <p>{{ quote }}</p>
-</div>
+    <!-- Display Quote -->
+    <div class="quote-section bg-light p-4 rounded shadow-sm mb-4">
+        <h5 class="font-weight-bold">Quote of the Day:</h5>
+        <p>{{ quote }}</p>
+    </div>
 
-<div class="sorting-options">
-    <form method="GET">
-        <label for="sort_by">Sort by:</label>
-        <select name="sort_by" id="sort_by" class="form-select">
-            <option value="due_date" {% if request.GET.sort_by == 'due_date' %}selected{% endif %}>Due Date</option>
-            <option value="created_at" {% if request.GET.sort_by == 'created_at' %}selected{% endif %}>Date Created</option>
-        </select>
-        <br>
-        <button type="submit" class="btn btn-primary">Sort</button>
-    </form>
-</div>
+    <!-- Sorting Options -->
+    <div class="sorting-options">
+        <form method="GET">
+            <label for="sort_by">Sort by:</label>
+            <select name="sort_by" id="sort_by" class="form-select">
+                <option value="due_date" {% if request.GET.sort_by == 'due_date' %}selected{% endif %}>Due Date</option>
+                <option value="created_at" {% if request.GET.sort_by == 'created_at' %}selected{% endif %}>Date Created</option>
+            </select>
+            <br>
+            <button type="submit" class="btn btn-primary">Sort</button>
+        </form>
+    </div>
 
-
-<!-- Tasks in Card Layout -->
-<div class="task-container d-flex flex-wrap">
-    {% for task in tasks %}
-        <div class="card-stack">
-            <div class="card task shadow-lg mb-3" id="task-card-{{ task.id }}" onclick="toggleCard({{ task.id }})">
+    <!-- Tasks in Card Layout -->
+    <div class="task-container">
+        {% for task in tasks %}
+            <div class="card-stack">
                 <div class="card-header bg-info text-white">
                     <h5 class="task-title mb-0">{{ task.title }}</h5>
                 </div>
                 <div class="card-body collapse" id="task-details-{{ task.id }}">
                     <p><strong>Due:</strong> {{ task.due_date }}</p>
                     <p><strong>Status:</strong> {% if task.completed %} Completed {% else %} Incomplete {% endif %}</p>
-                    <p>{{ task.description|slice:":200" }}...</p>  <!-- Show the first 200 characters -->
+                    <p>{{ task.description|slice:":200" }}...</p>
                     <a href="{% url 'update_task' task.id %}" class="btn btn-warning btn-sm">Edit</a>
                     <a href="{% url 'delete_task' task.id %}" class="btn btn-danger btn-sm" onclick="return confirmDelete({{ task.id }})">Delete</a>
                 </div>
             </div>
-        </div>
-    {% endfor %}
-</div>
+        {% endfor %}
+    </div>
 
-<div class="mt-3">
-    <a href="{% url 'create_task' %}" class="btn btn-success btn-lg">Create a new task</a>
-</div>
+    <!-- Add Task Button -->
+    <div class="mt-3">
+        <a href="{% url 'create_task' %}" class="add-task-btn">Create a New Task</a>
+    </div>
 {% endblock %}
-
-
-
-
