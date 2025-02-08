@@ -152,3 +152,10 @@ AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 LOGIN_REDIRECT_URL = '/users/login/'  # Redirect to task list instead of home page
 LOGOUT_REDIRECT_URL = '/login/'
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'TIMEOUT': 86400,  # Cache for 24 hours (86400 seconds)
+    }
+}

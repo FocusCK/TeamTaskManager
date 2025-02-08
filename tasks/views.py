@@ -3,6 +3,7 @@ from .forms import TaskForm
 from .models import Task
 from django.contrib.auth.decorators import login_required
 import requests
+from django.core.cache import cache
 
 
 # Create your views here.
@@ -62,7 +63,12 @@ def dashboard(request):
     tasks = Task.objects.filter(user=request.user)
     sort_by = request.GET.get('sort_by', 'due_date')
     completion_status = request.GET.get('completion_status')
-    quote = get_daily_quote()
+    quote = cache.get('quote_of_the_day')
+
+    if not quote:
+        # Get a new quote only if it's not cached
+        quote = get_daily_quote()
+        cache.set('quote_of_the_day', quote, timeout=86400)  # Cache for 24 hours
     if sort_by not in ['due_date', 'created_at']:
         sort_by = 'due_date'
     tasks = tasks.order_by(sort_by)
